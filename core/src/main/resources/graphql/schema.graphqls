@@ -1,0 +1,13 @@
+type Player {
+    id: ID
+    name: String
+    score: Float
+}
+
+type Query {
+    playerById(id: ID): Player
+}
+
+type Mutation {
+    createPlayer(name: String, password: String): Player
+}

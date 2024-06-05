@@ -1,4 +1,7 @@
 spring:
+  graphql:
+    graphiql:
+      enabled: true
   data:
     mongodb:
       host: localhost
@@ -6,3 +9,4 @@ spring:
       username: root
       password: password123
       database: dev
+      authentication-database: admin
