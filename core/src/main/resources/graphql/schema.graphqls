@@ -4,8 +4,15 @@ type Player {
     score: Float
 }
 
+type AuthenticationResponse {
+    token: String,
+    expiresIn: Float,
+    player: Player
+}
+
 type Query {
-    playerById(id: ID): Player
+    playerById(id: ID): Player,
+    authenticate(name: String, password: String): AuthenticationResponse
 }
 
 type Mutation {
