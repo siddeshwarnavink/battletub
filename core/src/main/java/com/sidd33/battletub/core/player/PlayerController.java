@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +28,6 @@ public class PlayerController {
     @MutationMapping
     public Player createPlayer(@Argument String name, @Argument String password) throws Exception {  
         if (playerRepository.findByName(name).isPresent()) {
-            System.out.println("yes");
             throw new InvalidInputException("Player with name already exist");
         }
 
@@ -36,5 +37,11 @@ public class PlayerController {
                 .build();
 
        return playerRepository.save(player);
+    }
+
+    @QueryMapping
+    @Secured("ROLE_USER")
+    public Player profile(@AuthenticationPrincipal Player player) {
+        return player;
     }
 }

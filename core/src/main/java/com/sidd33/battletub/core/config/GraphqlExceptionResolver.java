@@ -29,7 +29,7 @@ public class GraphqlExceptionResolver extends DataFetcherExceptionResolverAdapte
                     .path(env.getExecutionStepInfo().getPath())
                     .location(env.getField().getSourceLocation())
                     .build();
-        }
+        } 
         return null;
     }
 }

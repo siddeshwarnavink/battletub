@@ -6,13 +6,14 @@ type Player {
 
 type AuthenticationResponse {
     token: String,
-    expiresIn: Float,
+    expiresIn: Int,
     player: Player
 }
 
 type Query {
     playerById(id: ID): Player,
-    authenticate(name: String, password: String): AuthenticationResponse
+    authenticate(name: String, password: String): AuthenticationResponse,
+    profile: Player
 }
 
 type Mutation {
