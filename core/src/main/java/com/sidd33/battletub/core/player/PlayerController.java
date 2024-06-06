@@ -24,8 +24,9 @@ public class PlayerController {
     }
 
     @MutationMapping
-    public Player createPlayer(@Argument String name, @Argument String password) throws Exception {
+    public Player createPlayer(@Argument String name, @Argument String password) throws Exception {  
         if (playerRepository.findByName(name).isPresent()) {
+            System.out.println("yes");
             throw new InvalidInputException("Player with name already exist");
         }
 
@@ -34,6 +35,6 @@ public class PlayerController {
                 .password(passwordEncoder.encode(password))
                 .build();
 
-        return playerRepository.save(player);
+       return playerRepository.save(player);
     }
 }
