@@ -1,13 +1,15 @@
 import type { Component } from 'solid-js';
+import { Router, Route } from '@solidjs/router'
 
-import styles from './App.module.scss'
+import Home from './pages/Home'
+import Game from './pages/Game'
 
 const App: Component = () => {
   return (
-    <div class={styles.wrapper}>
-      <h1>BattleTub 2D</h1>
-      <button class='nes-btn is-primary'>Play Now</button>
-    </div>
+    <Router>
+      <Route path='/' component={Home} />
+      <Route path='/play' component={Game} />
+    </Router>
   );
 };
 
