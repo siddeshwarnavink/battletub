@@ -1,4 +1,4 @@
 export interface ITorch {
-    lit: boolean,
-    frame: number
+  lit: boolean
+  frame: number
 }

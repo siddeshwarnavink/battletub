@@ -7,7 +7,12 @@ const Home: Component = () => {
   return (
     <div class={styles.wrapper}>
       <h1>BattleTub 2D</h1>
-      <A href='/play' class='nes-btn is-primary'>Play Now</A>
+      <A
+        href="/play"
+        class="nes-btn is-primary"
+      >
+        Play Now
+      </A>
     </div>
   )
 }

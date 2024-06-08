@@ -12,12 +12,15 @@ const Game: Component = () => {
     document.body.style.backgroundColor = '#000'
     initilize(game)
 
-    onCleanup(() => document.body.style.backgroundColor = oldBackground)
+    onCleanup(() => (document.body.style.backgroundColor = oldBackground))
   })
 
   return (
     <>
-      <canvas ref={el => game = el} class={styles.gameboard} />
+      <canvas
+        ref={(el) => (game = el)}
+        class={styles.gameboard}
+      />
     </>
   )
 }
