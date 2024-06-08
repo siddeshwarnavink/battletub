@@ -48,7 +48,7 @@ export class Player {
     )
 
     this.light(pos_x, pos_y)
-    this.torch_func(pos_x, pos_y)
+    this.torch_func()
 
     context.drawImage(
       this.sprite,
@@ -87,7 +87,7 @@ export class Player {
     context.fill()
   }
 
-  public torch_func(pos_x: number, pos_y: number) {
+  public torch_func() {
     const { config, context } = GloablState
     if (this.torch.lit) {
       for (let y = 0; y < config.tiles.y; y++) {

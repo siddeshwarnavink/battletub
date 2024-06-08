@@ -4,7 +4,7 @@ import config from '.'
 const keymapping: IKeyMapping = {
   // left:
   37: {
-    x: config.speed,
+    x: -config.speed,
     y: 0,
     a: false,
     f: [6, 7, 8, 7],
@@ -12,7 +12,7 @@ const keymapping: IKeyMapping = {
   // up:
   38: {
     x: 0,
-    y: config.speed,
+    y: -config.speed,
     a: false,
     f: [3, 4, 5, 4],
   },

@@ -1,4 +1,5 @@
 import { GloablState } from '../types/globalState'
+import { IMapdata } from '../types/mapData'
 
 export class Map {
   private tiles: HTMLImageElement[] = []

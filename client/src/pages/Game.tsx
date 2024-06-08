@@ -1,6 +1,7 @@
 import { Component, onCleanup, onMount } from 'solid-js'
 
 import { initilize } from '../game/main'
+import { IMapdata } from '../game/types/mapData'
 import styles from './Game.module.scss'
 
 const Game: Component = () => {

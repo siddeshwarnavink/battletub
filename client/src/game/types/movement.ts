@@ -1,5 +1,5 @@
 export interface IMovement {
   moving: boolean
-  key: any
+  key: number
   frame: number
 }

@@ -4,6 +4,7 @@ import { Map } from './core/Map'
 import { Player } from './core/Player'
 import { Viewport } from './core/Viewport'
 import { GloablState } from './types/globalState'
+import { IMapdata } from './types/mapData'
 
 const loop = () => {
   window.requestAnimationFrame(loop)
@@ -101,7 +102,7 @@ document.addEventListener('keyup', (event) => {
 
   for (const key in keys) {
     if (keys[key].a) {
-      player.movement.key = key
+      player.movement.key = parseInt(key)
       found = true
     }
   }

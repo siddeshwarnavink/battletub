@@ -1,4 +1,4 @@
-interface IMapdata {
+export interface IMapdata {
   frame: number
   height: string
   width: string
