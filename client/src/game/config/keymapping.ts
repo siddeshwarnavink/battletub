@@ -1,5 +1,5 @@
-import config from '.'
 import { IKeyMapping } from '../types/keymapping'
+import config from '.'
 
 const keymapping: IKeyMapping = {
     // left:

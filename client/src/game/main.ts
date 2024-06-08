@@ -1,9 +1,9 @@
-import config from './config';
-import keymapping from './config/keymapping';
-import { Map } from './core/Map';
-import { Player } from './core/Player';
-import { Viewport } from './core/Viewport';
-import { GloablState } from './types/globalState';
+import config from './config'
+import keymapping from './config/keymapping'
+import { Map } from './core/Map'
+import { Player } from './core/Player'
+import { Viewport } from './core/Viewport'
+import { GloablState } from './types/globalState'
 
 
 const loop = () => {
@@ -36,12 +36,12 @@ export const initilize = (canvasEl: HTMLCanvasElement) => {
 
     GloablState.context = context
 
-    console.log("global state", GloablState);
+    console.log('global state', GloablState)
     
 
     checkSizing()
     window.onresize = () => checkSizing()
-    loop();
+    loop()
 }
 
 const checkSizing = () => {
@@ -50,7 +50,7 @@ const checkSizing = () => {
     config.win = {
         width: window.innerWidth,
         height: window.innerHeight
-    };
+    }
 
     config.tiles = {
         x: Math.ceil(config.win.width / config.size.tile),
@@ -62,57 +62,57 @@ const checkSizing = () => {
         y: Math.round(config.tiles.y / 2)
     }
 
-    viewport.x = 0;
-    viewport.y = 0;
-    viewport.width = config.win.width;
-    viewport.height = config.win.height;
+    viewport.x = 0
+    viewport.y = 0
+    viewport.width = config.win.width
+    viewport.height = config.win.height
 
-    context.canvas.width = config.win.width;
-    context.canvas.height = config.win.height;
+    context.canvas.width = config.win.width
+    context.canvas.height = config.win.height
 }
 
 // player movement start:
 document.addEventListener('keydown', (event) => {
     const { player, keys } = GloablState
     if (event.keyCode >= 37 && event.keyCode <= 40) {
-        player.movement.moving = true;
-        player.movement.key = event.keyCode;
+        player.movement.moving = true
+        player.movement.key = event.keyCode
 
-        for (let key in keys) {
+        for (const key in keys) {
             if (key === event.keyCode.toString()) {
-                keys[key].a = true;
+                keys[key].a = true
             }
         }
     }
     else {
         switch (event.keyCode) {
             case 84: // t
-                player.torch.lit = (player.torch.lit) ? false : true;
-                break;
+                player.torch.lit = (player.torch.lit) ? false : true
+                break
         }
     }
-});
+})
 
 
 // player movement end:
 document.addEventListener('keyup', (event) => {
     const { player, keys } = GloablState
-    let found = false;
+    let found = false
 
-    for (let key in keys) {
+    for (const key in keys) {
         if (key === event.keyCode.toString()) {
-            keys[key].a = false;
+            keys[key].a = false
         }
     }
 
-    for (let key in keys) {
+    for (const key in keys) {
         if (keys[key].a) {
-            player.movement.key = key;
-            found = true;
+            player.movement.key = key
+            found = true
         }
     }
 
     if (!found) {
-        player.movement.moving = false;
+        player.movement.moving = false
     }
-});
+})

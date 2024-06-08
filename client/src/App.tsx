@@ -1,8 +1,8 @@
-import type { Component } from 'solid-js';
-import { Router, Route } from '@solidjs/router'
+import { Route,Router } from '@solidjs/router'
+import type { Component } from 'solid-js'
 
-import Home from './pages/Home'
 import Game from './pages/Game'
+import Home from './pages/Home'
 
 const App: Component = () => {
   return (
@@ -10,7 +10,7 @@ const App: Component = () => {
       <Route path='/' component={Home} />
       <Route path='/play' component={Game} />
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

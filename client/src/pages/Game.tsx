@@ -1,11 +1,11 @@
 import { Component, onCleanup, onMount } from 'solid-js'
 
+import { initilize } from '../game/main'
 import styles from './Game.module.scss'
-import { initilize } from '../game/main';
 
 const Game: Component = () => {
-  let game: HTMLCanvasElement;
-  let oldBackground: string;
+  let game: HTMLCanvasElement
+  let oldBackground: string
 
   onMount(() => {
     oldBackground = document.body.style.backgroundColor
