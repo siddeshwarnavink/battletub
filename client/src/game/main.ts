@@ -17,26 +17,23 @@ const loop = () => {
   player.draw()
 }
 
-GloablState.config = config
-GloablState.keys = keymapping
-GloablState.viewport = new Viewport(
-  0,
-  0,
-  GloablState.config.win.width,
-  GloablState.config.win.height,
-)
-GloablState.player = new Player(4, 4)
-GloablState.map = new Map('Map')
-GloablState.Loop = loop
-
-export const initilize = (canvasEl: HTMLCanvasElement) => {
+export const initilize = (canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
   const context = canvasEl.getContext('2d')
 
   if (context === null) throw new Error('Invalid canvas element')
 
   GloablState.context = context
-
-  console.log('global state', GloablState)
+  GloablState.config = config
+  GloablState.keys = keymapping
+  GloablState.map = new Map(mapData)
+  GloablState.viewport = new Viewport(
+    0,
+    0,
+    GloablState.config.win.width,
+    GloablState.config.win.height,
+  )
+  GloablState.player = new Player(4, 4)
+  GloablState.Loop = loop
 
   checkSizing()
   window.onresize = () => checkSizing()
@@ -78,7 +75,7 @@ document.addEventListener('keydown', (event) => {
     player.movement.key = event.keyCode
 
     for (const key in keys) {
-      if (key === event.keyCode.toString()) {
+      if (parseInt(key) === event.keyCode) {
         keys[key].a = true
       }
     }

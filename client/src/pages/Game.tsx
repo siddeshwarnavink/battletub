@@ -10,7 +10,10 @@ const Game: Component = () => {
   onMount(() => {
     oldBackground = document.body.style.backgroundColor
     document.body.style.backgroundColor = '#000'
-    initilize(game)
+
+    fetch('/game-assets/json/map.json')
+      .then((response) => response.json())
+      .then((mapData: IMapdata) => initilize(game, mapData))
 
     onCleanup(() => (document.body.style.backgroundColor = oldBackground))
   })

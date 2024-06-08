@@ -4,28 +4,26 @@ import { IPosition } from '../types/position'
 import { ITorch } from '../types/torch'
 
 export class Player {
-  private timer: ReturnType<typeof setInterval>
-  private frames: number[]
-  private sprite: HTMLImageElement
-  public movement: IMovement
+  private frames: number[] = [
+    0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.48, 0.46, 0.44, 0.42, 0.4,
+  ]
+  private sprite: HTMLImageElement = new Image()
+  public movement: IMovement = {
+    moving: false,
+    key: 40,
+    frame: 1,
+  }
   public pos: IPosition
   private tile: IPosition
-  public torch: ITorch
+  public torch: ITorch = {
+    lit: false,
+    frame: 0,
+  }
 
   constructor(tile_x: number, tile_y: number) {
-    this.timer = setInterval(() => GloablState.player.frame(), 125)
-    this.frames = [
-      0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.48, 0.46, 0.44, 0.42, 0.4,
-    ]
-
-    this.sprite = new Image()
+    setInterval(() => GloablState.player.frame(), 125)
     this.sprite.src = '/game-assets/img/char/hero.png'
 
-    this.movement = {
-      moving: false,
-      key: 40,
-      frame: 1,
-    }
     this.pos = {
       x: GloablState.config.size.tile * tile_x,
       y: GloablState.config.size.tile * tile_y,
@@ -33,10 +31,6 @@ export class Player {
     this.tile = {
       x: tile_x,
       y: tile_y,
-    }
-    this.torch = {
-      lit: false,
-      frame: 0,
     }
   }
 

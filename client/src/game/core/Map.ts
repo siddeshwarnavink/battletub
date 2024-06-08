@@ -1,46 +1,38 @@
 import { GloablState } from '../types/globalState'
 
 export class Map {
-  public data: any = {}
-  private tiles: any[] = []
-  private timer: ReturnType<typeof setInterval>
+  private tiles: HTMLImageElement[] = []
 
-  constructor(title: string) {
-    this.timer = setInterval(() => GloablState.map.frame(), 750)
-    this.load(title)
+  constructor(public data: IMapdata) {
+    setInterval(() => GloablState.map.frame(), 750)
+    this.load()
   }
 
-  public load(title: string) {
-    const map = this
+  private load() {
     const { Loop } = GloablState
 
-    fetch('/game-assets/json/' + title.toString().toLowerCase() + '.json')
-      .then((response) => response.json())
-      .then((data) => {
-        this.data = data
-        this.data.frame = 0
+    this.data.frame = 0
 
-        let init = false
-        let loaded = 0
+    let init = false
+    let loaded = 0
 
-        for (let i = 0; i < map.data.assets.length; i++) {
-          map.tiles.push(new Image())
-          map.tiles[i].src =
-            '/game-assets/img/tile/' +
-            map.data.assets[i].file_name +
-            '.png?v=' +
-            new Date().getTime()
+    for (let i = 0; i < this.data.assets.length; i++) {
+      this.tiles.push(new Image())
+      this.tiles[i].src =
+        '/game-assets/img/tile/' +
+        this.data.assets[i].file_name +
+        '.png?v=' +
+        new Date().getTime()
 
-          map.tiles[i].onload = function () {
-            loaded++
+      this.tiles[i].onload = () => {
+        loaded++
 
-            if (!init && loaded == map.data.assets.length) {
-              init = true
-              if (Loop) Loop()
-            }
-          }
+        if (!init && loaded == this.data.assets.length) {
+          init = true
+          if (Loop) Loop()
         }
-      })
+      }
+    }
   }
 
   public draw() {
@@ -57,11 +49,11 @@ export class Map {
     if (y_min < 0) {
       y_min = 0
     }
-    if (x_max > map.data.width) {
-      x_max = map.data.width
+    if (x_max > parseInt(this.data.width)) {
+      x_max = parseInt(this.data.width)
     }
-    if (y_max > map.data.height) {
-      y_max = map.data.height
+    if (y_max > parseInt(this.data.height)) {
+      y_max = parseInt(this.data.height)
     }
 
     for (let y = y_min; y < y_max; y++) {
