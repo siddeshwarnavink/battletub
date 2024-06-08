@@ -1,7 +1,7 @@
 import { IConfig } from '../types/config'
 
 const config: IConfig = {
-  win: {
+  browserDimension: {
     width: window.innerWidth,
     height: window.innerHeight,
   },

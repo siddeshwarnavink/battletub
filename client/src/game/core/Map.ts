@@ -39,10 +39,16 @@ export class Map {
   public draw() {
     const { viewport, map, config, context } = GloablState
 
-    let x_min = Math.floor(viewport.x / config.size.tile)
-    let y_min = Math.floor(viewport.y / config.size.tile)
-    let x_max = Math.ceil((viewport.x + viewport.width) / config.size.tile)
-    let y_max = Math.ceil((viewport.y + viewport.height) / config.size.tile)
+    let x_min = Math.floor(viewport.getPosition().x / config.size.tile)
+    let y_min = Math.floor(viewport.getPosition().y / config.size.tile)
+    let x_max = Math.ceil(
+      (viewport.getPosition().x + viewport.getDimension().width) /
+        config.size.tile,
+    )
+    let y_max = Math.ceil(
+      (viewport.getPosition().y + viewport.getDimension().height) /
+        config.size.tile,
+    )
 
     if (x_min < 0) {
       x_min = 0
@@ -62,15 +68,15 @@ export class Map {
         const value = this.data.layout[y][x] - 1
         const tile_x = Math.floor(
           x * config.size.tile -
-            viewport.x +
-            config.win.width / 2 -
-            viewport.width / 2,
+            viewport.getPosition().x +
+            config.browserDimension.width / 2 -
+            viewport.getDimension().width / 2,
         )
         const tile_y = Math.floor(
           y * config.size.tile -
-            viewport.y +
-            config.win.height / 2 -
-            viewport.height / 2,
+            viewport.getPosition().y +
+            config.browserDimension.height / 2 -
+            viewport.getDimension().height / 2,
         )
 
         if (value > -1) {

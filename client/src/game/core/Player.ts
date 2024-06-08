@@ -41,10 +41,16 @@ export class Player {
       ? keys[player.movement.key].f[player.movement.frame]
       : keys[player.movement.key].f[1]
     const pos_x = Math.round(
-      player.pos.x - viewport.x + config.win.width / 2 - viewport.width / 2,
+      player.pos.x -
+        viewport.getPosition().x +
+        config.browserDimension.width / 2 -
+        viewport.getDimension().width / 2,
     )
     const pos_y = Math.round(
-      player.pos.y - viewport.y + config.win.height / 2 - viewport.height / 2,
+      player.pos.y -
+        viewport.getPosition().y +
+        config.browserDimension.height / 2 -
+        viewport.getDimension().height / 2,
     )
 
     this.light(pos_x, pos_y)

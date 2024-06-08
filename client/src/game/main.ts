@@ -27,12 +27,7 @@ export const initilize = (canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
   GloablState.config = config
   GloablState.keys = keymapping
   GloablState.map = new Map(mapData)
-  GloablState.viewport = new Viewport(
-    0,
-    0,
-    GloablState.config.win.width,
-    GloablState.config.win.height,
-  )
+  GloablState.viewport = new Viewport()
   GloablState.player = new Player(4, 4)
   GloablState.Loop = loop
 
@@ -44,14 +39,14 @@ export const initilize = (canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
 const checkSizing = () => {
   const { config, viewport, context } = GloablState
 
-  config.win = {
+  config.browserDimension = {
     width: window.innerWidth,
     height: window.innerHeight,
   }
 
   config.tiles = {
-    x: Math.ceil(config.win.width / config.size.tile),
-    y: Math.ceil(config.win.height / config.size.tile),
+    x: Math.ceil(config.browserDimension.width / config.size.tile),
+    y: Math.ceil(config.browserDimension.height / config.size.tile),
   }
 
   config.center = {
@@ -59,13 +54,10 @@ const checkSizing = () => {
     y: Math.round(config.tiles.y / 2),
   }
 
-  viewport.x = 0
-  viewport.y = 0
-  viewport.width = config.win.width
-  viewport.height = config.win.height
+  viewport.reset()
 
-  context.canvas.width = config.win.width
-  context.canvas.height = config.win.height
+  context.canvas.width = config.browserDimension.width
+  context.canvas.height = config.browserDimension.height
 }
 
 // player movement start:

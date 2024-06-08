@@ -1,17 +1,46 @@
+import { IDimension2D } from '../types/dimension2D'
 import { GloablState } from '../types/globalState'
+import { IPosition } from '../types/position'
 
+/**
+ * The camera that follows the player around
+ */
 export class Viewport {
-  constructor(
-    public x: number,
-    public y: number,
-    public width: number,
-    public height: number,
-  ) {}
+  private position: IPosition = { x: 0, y: 0 }
+  private dimenstion: IDimension2D = {
+    width: GloablState.config.browserDimension.width,
+    height: GloablState.config.browserDimension.height,
+  }
 
   /**
-   * center
+   * Current viewport position
    */
-  public center() {
+  public getPosition(): IPosition {
+    return this.position
+  }
+
+  /**
+   * Current viewport dimension
+   */
+  public getDimension(): IDimension2D {
+    return this.dimenstion
+  }
+
+  /**
+   * Reset position and dimension of viewport to initial values
+   */
+  public reset(): void {
+    this.position = { x: 0, y: 0 }
+    this.dimenstion = {
+      width: GloablState.config.browserDimension.width,
+      height: GloablState.config.browserDimension.height,
+    }
+  }
+
+  /**
+   * Correctly position the viewport at center
+   */
+  public center(): void {
     let move_x = 0
     let move_y = 0
 
@@ -35,10 +64,10 @@ export class Viewport {
   }
 
   /**
-   * scroll
+   * Move the viewport
    */
-  public scroll(x: number, y: number) {
-    this.x = x - this.width / 2
-    this.y = y - this.height / 2
+  private scroll(x: number, y: number): void {
+    this.position.x = x - this.dimenstion.width / 2
+    this.position.y = y - this.dimenstion.height / 2
   }
 }
