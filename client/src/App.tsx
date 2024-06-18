@@ -1,9 +1,10 @@
 import { Route, Router } from '@solidjs/router'
-import type { Component } from 'solid-js'
+import { type Component,lazy } from 'solid-js'
 
 import Auth from './pages/Auth'
-import Game from './pages/Game'
 import Home from './pages/Home'
+
+const Game = lazy(() => import('./pages/Game'))
 
 const App: Component = () => {
   return (
@@ -16,7 +17,6 @@ const App: Component = () => {
         path="/auth"
         component={Auth}
       />
-
       <Route
         path="/play"
         component={Game}

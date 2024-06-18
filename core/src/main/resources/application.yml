@@ -1,5 +1,9 @@
 spring:
   graphql:
+    cors:
+      allow-credentials: true
+      allowed-origins:
+        - http://localhost:3000
     graphiql:
       enabled: true
   data:

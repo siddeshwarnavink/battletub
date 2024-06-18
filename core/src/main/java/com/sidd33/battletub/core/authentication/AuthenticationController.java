@@ -9,11 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.sidd33.battletub.core.exception.NotFoundException;
 import com.sidd33.battletub.core.player.Player;
 import com.sidd33.battletub.core.player.PlayerRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 public class AuthenticationController {
     @Autowired
     private PlayerRepository playerRepository;
