@@ -5,13 +5,15 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 
 import com.sidd33.battletub.core.exception.NotFoundException;
 import com.sidd33.battletub.core.player.Player;
 import com.sidd33.battletub.core.player.PlayerRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@CrossOrigin
 public class AuthenticationController {
     @Autowired
     private PlayerRepository playerRepository;
