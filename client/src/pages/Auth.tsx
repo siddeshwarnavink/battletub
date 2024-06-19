@@ -1,17 +1,22 @@
-import { type Component, createSignal, Show } from 'solid-js'
+import { useNavigate } from '@solidjs/router'
+import { type Component, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import Modal from '../components/UI/Modal'
+import AuthContext from '../context/Auth'
 import styles from './Auth.module.scss'
 
 const Auth: Component = () => {
+  const navigate = useNavigate()
   const [isLogin, setIsLogin] = createSignal(true)
   const [error, setError] = createSignal<string | null>(null)
-  const toggleAuth = () => setIsLogin(prev => !prev)
+  const [message, setMessage] = createSignal<string | null>(null)
   const [fields, setFields] = createStore({
     name: '',
     password: ''
   })
+  const authCtx = useContext(AuthContext)
+  const toggleAuth = () => setIsLogin(prev => !prev)
 
   const handleSubmit = async (event: Event): Promise<void> => {
     event.preventDefault()
@@ -31,7 +36,7 @@ const Auth: Component = () => {
       }
     })
 
-    if (!isLogin) {
+    if (!isLogin()) {
       body = JSON.stringify({
         query: `
           mutation CreatePlayer($name: String!, $password: String!) {
@@ -56,9 +61,18 @@ const Auth: Component = () => {
         body
       })
       const data = await response.json()
-
-      if (data.errors) {
+      if (data.errors)
         throw new Error(data.errors[0].message)
+
+      if (!isLogin()) {
+        setMessage('Account created. Now you can login')
+        setIsLogin(true)
+      }
+      else {
+        const token: string = data.data.authenticate.token
+        localStorage.setItem('token', token)
+        authCtx?.setToken(token)
+        navigate('/')
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -74,6 +88,13 @@ const Auth: Component = () => {
         <p>{error()}</p>
         <menu class='dialog-menu'>
           <button onClick={() => setError(null)} class='nes-btn'>Close</button>
+        </menu>
+      </Modal>
+      <Modal open={message() != null} onClose={() => setMessage(null)}>
+        <p class="title">Message</p>
+        <p>{message()}</p>
+        <menu class='dialog-menu'>
+          <button onClick={() => setMessage(null)} class='nes-btn'>Close</button>
         </menu>
       </Modal>
       <div class={styles.wrapper}>
