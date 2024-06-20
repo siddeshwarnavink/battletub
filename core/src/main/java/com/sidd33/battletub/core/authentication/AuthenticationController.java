@@ -1,9 +1,10 @@
 package com.sidd33.battletub.core.authentication;
 
+import com.sidd33.battletub.core.exception.InvalidInputException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.sidd33.battletub.core.exception.NotFoundException;
@@ -24,18 +25,37 @@ public class AuthenticationController {
     public AuthenticationResponse authenticate(@Argument String name, @Argument String password) throws Exception {
         final String errorMessage = "Invalid name or password";
 
-        UserDetails authenticatedUser = playerRepository.findByName(name)
+        Player authenticatedUser = playerRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(errorMessage));
-        if(!passwordEncoder.matches(password, authenticatedUser.getPassword())) {
+        if (!passwordEncoder.matches(password, authenticatedUser.getPassword())) {
             throw new NotFoundException(errorMessage);
         }
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        AuthenticationResponse response = AuthenticationResponse.builder()
+        return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .player((Player) authenticatedUser)
+                .player(authenticatedUser)
                 .build();
-        return response;
+    }
+
+    @QueryMapping
+    public AuthenticationResponse authorize(@Argument String token) throws Exception {
+        String name;
+        try {
+            name = jwtService.extractUsername(token);
+        } catch (ExpiredJwtException e) {
+            throw new InvalidInputException("Login expired. Please log in again.");
+        }
+
+        Player authenticatedUser = playerRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException("Invalid token"));
+
+        String jwtToken = jwtService.generateToken(authenticatedUser);
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .player(authenticatedUser)
+                .build();
     }
 }

@@ -13,6 +13,7 @@ type AuthenticationResponse {
 type Query {
     playerById(id: ID): Player,
     authenticate(name: String, password: String): AuthenticationResponse,
+    authorize(token: String): AuthenticationResponse,
     profile: Player
 }
 
