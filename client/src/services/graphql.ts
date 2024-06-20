@@ -3,7 +3,13 @@ export type GraphqlParams = {
   variables?: Record<string, string | number | boolean>
 }
 
-const graphqlService = async ({ query, variables }: GraphqlParams) => {
+type GraphqlError = {
+  errors?: {
+    message: string
+  }[]
+}
+
+const graphqlService = async <T>({ query, variables }: GraphqlParams): Promise<{ data: T } & GraphqlError> => {
   const response = await fetch('http://localhost:8080/graphql', {
     headers: {
       'Content-Type': 'application/json'
@@ -13,9 +19,8 @@ const graphqlService = async ({ query, variables }: GraphqlParams) => {
       query,
       variables
     })
-
   })
-  return response.json()
+  return response.json() as Promise<{ data: T } & GraphqlError>
 }
 
 export default graphqlService

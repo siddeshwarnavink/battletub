@@ -6,11 +6,12 @@ import Modal from '../components/UI/Modal'
 import AuthContext from '../context/Auth'
 import useErrorModal from '../hooks/useErrorModal'
 import graphqlService, { GraphqlParams } from '../services/graphql'
+import { type Profile } from '../types/profile'
 import styles from './Auth.module.scss'
 
 const Auth: Component = () => {
   const navigate = useNavigate()
-  const [isLogin, setIsLogin] = createSignal(true)
+  const [isLogin, setIsLogin] = createSignal<boolean>(true)
   const [message, setMessage] = createSignal<string | null>(null)
   const [fields, setFields] = createStore({
     name: '',
@@ -54,7 +55,16 @@ const Auth: Component = () => {
     }
 
     try {
-      const data = await graphqlService(body)
+      const data = await graphqlService<{
+        createPlayer?: {
+          name: string,
+          score: number
+        }
+        authenticate?: {
+          token: string,
+          player: Profile
+        }
+      }>(body)
       if (data.errors)
         throw new Error(data.errors[0].message)
 
@@ -64,11 +74,11 @@ const Auth: Component = () => {
         setFields('password', '')
         setIsLogin(true)
       }
-      else {
-        const token: string = data.data.authenticate.token
+      else if (data.data.authenticate?.token && data.data.authenticate.player) {
+        const token: string = data.data.authenticate?.token
         localStorage.setItem('token', token)
         authCtx?.setToken(token)
-        authCtx?.setProfile(data.data.authenticate.player)
+        authCtx?.setProfile(data.data.authenticate?.player)
         navigate('/')
       }
     } catch (error) {

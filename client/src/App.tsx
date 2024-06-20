@@ -4,7 +4,7 @@ import { type Component, createEffect, createSignal, lazy, Show } from 'solid-js
 import AuthContext from './context/Auth'
 import useErrorModal from './hooks/useErrorModal'
 import graphqlService from './services/graphql'
-import { Profile } from './types/profile'
+import { type Profile } from './types/profile'
 
 const Auth = lazy(() => import('./pages/Auth'))
 const Home = lazy(() => import('./pages/Home'))
@@ -19,7 +19,12 @@ const App: Component = () => {
     try {
       const token = localStorage.getItem('token')
       if (token) {
-        const data = await graphqlService({
+        const data = await graphqlService<{
+          authorize: {
+            token: string,
+            player: Profile
+          }
+        }>({
           query: `
             query Authorize($token: String!) {
               authorize(token: $token) {
