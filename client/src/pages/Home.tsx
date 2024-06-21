@@ -8,7 +8,7 @@ const Home: Component = () => {
   const authCtx = useContext(AuthContext)  
   return (
     <div class={styles.wrapper}>
-      <h1>Hello, {authCtx?.profile?.name}</h1>
+      <h1>Hello, {authCtx?.profile()?.name}</h1>
       <A
         href="/play"
         class="nes-btn is-primary"

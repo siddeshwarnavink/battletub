@@ -63,9 +63,9 @@ const App: Component = () => {
 
   return (
     <AuthContext.Provider value={{
-      isAuth: authToken() != null,
-      token: authToken(),
-      profile: profile(),
+      isAuth: () => authToken() != null,
+      token: authToken,
+      profile: profile,
       setToken: setAuthToken,
       setProfile,
       clearToken: () => setAuthToken(null),
