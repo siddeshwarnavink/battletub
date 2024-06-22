@@ -1,10 +1,12 @@
 package com.sidd33.battletub.core.game;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Position2D {
     private float x;
     private float y;

@@ -1,12 +1,23 @@
 import { Client } from '@stomp/stompjs'
-import { Component, onCleanup, onMount } from 'solid-js'
+import { Component, onCleanup, onMount, useContext } from 'solid-js'
 
+import AuthContext from '../context/Auth'
 import { initilize } from '../game/main'
 import { GloablState } from '../game/types/globalState'
 import { IMapdata } from '../game/types/mapData'
+import { IPosition } from '../game/types/position'
+import graphqlService from '../services/graphql'
 import styles from './Game.module.scss'
 
+type PlayerDataQueryResult = {
+  playerById: {
+    id: string,
+    position: IPosition
+  }
+}
+
 const Game: Component = () => {
+  const authCtx = useContext(AuthContext)
   let game: HTMLCanvasElement
   let oldBackground: string
 
@@ -16,30 +27,44 @@ const Game: Component = () => {
 
     const response = await fetch('/game-assets/json/map.json')
     const mapData: IMapdata = await response.json()
-    initilize(game, mapData)
+
+    const profile = authCtx?.profile()
+    if (profile) {
+      const playerData = await graphqlService<PlayerDataQueryResult>({
+        query: `
+          query PlayerData($id: ID!) {
+            playerById(id: $id) {
+              id,
+              position {
+                x,
+                y
+              }
+            }
+          }
+        `,
+        variables: {
+          id: profile?.id
+        }
+      })
+      initilize(profile, game, mapData)
+      if (!playerData.errors) {
+        GloablState.player.move(playerData.data.playerById.position.x, playerData.data.playerById.position.y)
+      }
+    }
 
     const client = new Client({
-      brokerURL: 'ws://localhost:8080/ws',
-      onConnect: () => {
-        client.subscribe('/topic/public', message => {
-          console.log(message)
-        })
-        client.publish({
-          destination: '/app/game.movePlayer',
-          body: JSON.stringify({
-            x: 12.4,
-            y: 13.5
-          })
-        })
-      }
+      brokerURL: 'ws://localhost:8080/ws'
     })
     client.activate()
 
+
     GloablState.player.addEventListener('player:move', () => {
-      console.log('move')
       client.publish({
         destination: '/app/game.movePlayer',
-        body: JSON.stringify(GloablState.player.pos)
+        body: JSON.stringify({
+          playerId: GloablState.player.playerId,
+          position: GloablState.player.pos
+        })
       })
     })
 

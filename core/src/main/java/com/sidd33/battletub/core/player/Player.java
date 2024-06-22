@@ -3,6 +3,7 @@ package com.sidd33.battletub.core.player;
 import java.util.Collection;
 import java.util.List;
 
+import com.sidd33.battletub.core.game.Position2D;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +27,8 @@ public class Player implements UserDetails {
     private String password;
     @Builder.Default
     private Float score = 0f;
+    @Builder.Default
+    private Position2D position = new Position2D(4, 4);
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

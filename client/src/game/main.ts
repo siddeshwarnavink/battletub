@@ -6,6 +6,7 @@ import { Player } from './core/Player'
 import { Viewport } from './core/Viewport'
 import { GloablState } from './types/globalState'
 import { IMapdata } from './types/mapData'
+import { IPosition } from './types/position'
 
 const loop = () => {
   window.requestAnimationFrame(loop)

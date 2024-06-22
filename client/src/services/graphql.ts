@@ -3,7 +3,7 @@ export type GraphqlParams = {
   variables?: Record<string, string | number | boolean>
 }
 
-type GraphqlError = {
+export type GraphqlError = {
   errors?: {
     message: string
   }[]

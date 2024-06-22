@@ -1,7 +1,13 @@
+type Position2D {
+    x: Float
+    y: Float
+}
+
 type Player {
     id: ID
     name: String
     score: Float
+    position: Position2D
 }
 
 type AuthenticationResponse {
