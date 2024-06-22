@@ -3,7 +3,7 @@ import { IMovement } from '../types/movement'
 import { IPosition } from '../types/position'
 import { ITorch } from '../types/torch'
 
-export class Player {
+export class Player extends EventTarget {
   private frames: number[] = [
     0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.48, 0.46, 0.44, 0.42, 0.4,
   ]
@@ -20,7 +20,8 @@ export class Player {
     frame: 0,
   }
 
-  constructor(tile_x: number, tile_y: number) {
+  constructor(public playerId: string, tile_x: number, tile_y: number) {
+    super()
     setInterval(() => GloablState.player.frame(), 125)
     this.sprite.src = '/game-assets/img/char/hero.png'
 
@@ -42,15 +43,15 @@ export class Player {
       : keys[player.movement.key].f[1]
     const pos_x = Math.round(
       player.pos.x -
-        viewport.getPosition().x +
-        config.browserDimension.width / 2 -
-        viewport.getDimension().width / 2,
+      viewport.getPosition().x +
+      config.browserDimension.width / 2 -
+      viewport.getDimension().width / 2,
     )
     const pos_y = Math.round(
       player.pos.y -
-        viewport.getPosition().y +
-        config.browserDimension.height / 2 -
-        viewport.getDimension().height / 2,
+      viewport.getPosition().y +
+      config.browserDimension.height / 2 -
+      viewport.getDimension().height / 2,
     )
 
     this.light(pos_x, pos_y)
@@ -134,7 +135,11 @@ export class Player {
     player.torch = this.torch
   }
 
-  public move(x: number, y: number) {
+  public dispatchMovement(): void {
+    this.dispatchEvent(new Event('player:move'))
+  }
+
+  public move(x: number, y: number): void {
     const { config, map } = GloablState
 
     const pos = {

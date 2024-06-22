@@ -1,3 +1,4 @@
+import { Profile } from '../types/profile'
 import config from './config'
 import keymapping from './config/keymapping'
 import { Map } from './core/Map'
@@ -18,7 +19,7 @@ const loop = () => {
   player.draw()
 }
 
-export const initilize = (canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
+export const initilize = (user: Profile, canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
   const context = canvasEl.getContext('2d')
 
   if (context === null) throw new Error('Invalid canvas element')
@@ -28,7 +29,7 @@ export const initilize = (canvasEl: HTMLCanvasElement, mapData: IMapdata) => {
   GloablState.keys = keymapping
   GloablState.map = new Map(mapData)
   GloablState.viewport = new Viewport()
-  GloablState.player = new Player(4, 4)
+  GloablState.player = new Player(user.id, 4, 4)
   GloablState.Loop = loop
 
   checkSizing()
@@ -66,6 +67,7 @@ document.addEventListener('keydown', (event) => {
   if (event.keyCode >= 37 && event.keyCode <= 40) {
     player.movement.moving = true
     player.movement.key = event.keyCode
+    player.dispatchMovement()
 
     for (const key in keys) {
       if (parseInt(key) === event.keyCode) {
